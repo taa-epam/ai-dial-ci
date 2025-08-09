@@ -97,7 +97,7 @@ runs:
       with:
         context: .
         load: true
-        platforms: linux/amd64
+        platforms: ${{ inputs.platforms }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
         tags: |

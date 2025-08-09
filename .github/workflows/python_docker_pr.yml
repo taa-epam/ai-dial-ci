@@ -129,5 +129,3 @@ jobs:
           trivy-severity-for-sarif: ${{ inputs.trivy-severity-for-sarif }}
           trivy-limit-severities-for-sarif: ${{ inputs.trivy-limit-severities-for-sarif }}
           platforms: ${{ inputs.platforms }}
-          gpr-username: ${{ secrets.GPR_USERNAME }}
-          gpr-password: ${{ secrets.GPR_PASSWORD }}
