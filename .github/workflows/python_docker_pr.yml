@@ -103,6 +103,11 @@ jobs:
       runs-on: ${{ inputs.runs-on }}
 
   docker_build:
+    strategy:
+      matrix:
+        platform: [linux/amd64, linux/arm64]
+    name: Build & scan for ${{ matrix.platform }}
+
     runs-on: ${{ fromJSON(inputs.runs-on) }}
     steps:
       - name: Maximize build space
@@ -128,4 +133,4 @@ jobs:
           trivy-severity: ${{ inputs.trivy-severity }}
           trivy-severity-for-sarif: ${{ inputs.trivy-severity-for-sarif }}
           trivy-limit-severities-for-sarif: ${{ inputs.trivy-limit-severities-for-sarif }}
-          platforms: ${{ inputs.platforms }}
+          platforms: ${{ matrix.platforms }}
