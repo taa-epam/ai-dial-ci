@@ -2,6 +2,11 @@ name: Python Docker PR workflow
 
 on:
   workflow_call:
+    secrets:
+      GPR_USERNAME:
+        required: false
+      GPR_PASSWORD:
+        required: false
     inputs:
       bypass-checks:
         type: boolean
