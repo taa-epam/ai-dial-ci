@@ -177,9 +177,9 @@ jobs:
           platforms: ${{ inputs.platforms }}
           image-extra-aliases: |
             ${{ env.DOCKERHUB_IMAGE_NAME }}:${{ needs.calculate_version.outputs.next-version }}
-            ${{ github.ref == 'refs/heads/development' && format('{0}:{1}', env.IMAGE_NAME, 'development') || ''}}
+            ${{ github.ref == 'refs/heads/development' && format('{0}:{1}', env.DOCKERHUB_IMAGE_NAME, 'development') || ''}}
             ${{ github.ref == 'refs/heads/development' && format('{0}/{1}:{2}', 'ghcr.io', env.IMAGE_NAME, 'development') || ''}}
-            ${{ startsWith(github.ref, 'refs/heads/release-') && needs.calculate_version.outputs.is-latest == 'true' && format('{0}:{1}', env.IMAGE_NAME, 'latest') || ''}}
+            ${{ startsWith(github.ref, 'refs/heads/release-') && needs.calculate_version.outputs.is-latest == 'true' && format('{0}:{1}', env.DOCKERHUB_IMAGE_NAME, 'latest') || ''}}
             ${{ startsWith(github.ref, 'refs/heads/release-') && needs.calculate_version.outputs.is-latest == 'true' && format('{0}/{1}:{2}', 'ghcr.io', env.IMAGE_NAME, 'latest') || ''}}
       - name: Publish packages to npmjs
         if: ${{ inputs.publish-enabled }}
