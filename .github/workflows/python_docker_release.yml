@@ -77,9 +77,15 @@ on:
         description: "Docker build platforms (default linux/amd64)"
         default: "linux/amd64"
         required: false
+      dockerhub-image-name:
+        type: string
+        description: "The name of the image on Docker Hub (e.g., user/repo)"
+        default: ""
+        required: false
 
 env:
   IMAGE_NAME: ${{ github.repository }}
+  DOCKERHUB_IMAGE_NAME: ${{ inputs.dockerhub-image-name || github.repository }}
 
 jobs:
   test:
@@ -156,11 +162,11 @@ jobs:
           trivy-limit-severities-for-sarif: ${{ inputs.trivy-limit-severities-for-sarif }}
           platforms: ${{ inputs.platforms }}
           image-extra-aliases: |
-            ${{ env.IMAGE_NAME }}:${{ needs.calculate_version.outputs.next-version }}
-            ${{ github.ref == 'refs/heads/development' && format('{0}:{1}', env.IMAGE_NAME, 'development') || ''}}
-            ${{ github.ref == 'refs/heads/development' && format('{0}/{1}:{2}', 'ghcr.io', env.IMAGE_NAME, 'development') || ''}}
-            ${{ startsWith(github.ref, 'refs/heads/release-') && needs.calculate_version.outputs.is-latest == 'true' && format('{0}:{1}', env.IMAGE_NAME, 'latest') || ''}}
-            ${{ startsWith(github.ref, 'refs/heads/release-') && needs.calculate_version.outputs.is-latest == 'true' && format('{0}/{1}:{2}', 'ghcr.io', env.IMAGE_NAME, 'latest') || ''}}
+            ${{ env.DOCKERHUB_IMAGE_NAME }}:${{ needs.calculate_version.outputs.next-version }}
+            ${{ github.ref == 'refs/heads/development' && format('{0}:{1}', env.DOCKERHUB_IMAGE_NAME, 'development') || ''}}
+            ${{ github.ref == 'refs/heads/development' && format('{0}/{1}:{2}', 'ghcr.io', env.DOCKERHUB_IMAGE_NAME, 'development') || ''}}
+            ${{ startsWith(github.ref, 'refs/heads/release-') && needs.calculate_version.outputs.is-latest == 'true' && format('{0}:{1}', env.DOCKERHUB_IMAGE_NAME, 'latest') || ''}}
+            ${{ startsWith(github.ref, 'refs/heads/release-') && needs.calculate_version.outputs.is-latest == 'true' && format('{0}/{1}:{2}', 'ghcr.io', env.DOCKERHUB_IMAGE_NAME, 'latest') || ''}}
       - uses: epam/ai-dial-ci/actions/publish_tag_release@2.4.1
         with:
           tag-version: ${{ needs.calculate_version.outputs.next-version }}
